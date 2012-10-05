@@ -8,6 +8,13 @@ def palindrome?(string)
   true ? string.eql?(string.reverse) : false
 end
 
-puts palindrome?("A man, a plan, a canal -- Panama")
-puts palindrome?("Madam, I'm Adam!")
-puts palindrome?("Abracadabra")
+def count_words(string)
+  words = string.
+    split(/[\b,]+/)
+  puts words
+end
+
+#puts palindrome?("A man, a plan, a canal -- Panama")
+#puts palindrome?("Madam, I'm Adam!")
+#puts palindrome?("Abracadabra")
+count_words("Hello, hello")

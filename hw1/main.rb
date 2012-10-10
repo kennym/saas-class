@@ -10,11 +10,20 @@ end
 
 def count_words(string)
   words = string.
-    split(/[\b,]+/)
-  puts words
+    # Split at any word boundary
+    split(/\b/).
+    each {|word|
+      word.gsub!(/(\W|\d)/, "")
+      word.strip!
+      word.downcase!
+    }
+  freq = words.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+  freq.delete("")
+  return freq
 end
 
 #puts palindrome?("A man, a plan, a canal -- Panama")
 #puts palindrome?("Madam, I'm Adam!")
 #puts palindrome?("Abracadabra")
-count_words("Hello, hello")
+#puts count_words("A man, a plan, a canal -- Panama")
+#puts count_words "Doo bee doo bee doo"

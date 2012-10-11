@@ -59,7 +59,7 @@ def test_jelly_bean_delicious
   @j = JellyBean.new(name, calories, flavor)
 
   test_result = (@j.delicious? == true)
-  @j.flavor = "black lickorice"
+  @j.flavor = "black licorice"
   test_result = test_result && (@j.delicious? == false)
 
   return test_result

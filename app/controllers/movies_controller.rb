@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+  helper_method :sort_column
 
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -7,7 +8,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @movies = Movie.order(sort_column)
   end
 
   def new
@@ -38,4 +39,9 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  private
+
+  def sort_column
+    Movie.column_names.include?(params[:sort_by]) ? params[:sort_by] : nil
+  end
 end

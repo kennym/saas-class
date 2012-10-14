@@ -1,14 +1,15 @@
 class MoviesController < ApplicationController
   helper_method :sort_column
 
+  def index
+    set_ratings
+    @movies = Movie.where(:rating => @ratings.select{|k, v| @ratings[k] == true}.keys)
+                   .order(sort_column)
+  end
+
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
-    # will render app/views/movies/show.<extension> by default
-  end
-
-  def index
-    @movies = Movie.order(sort_column)
   end
 
   def new
@@ -40,6 +41,22 @@ class MoviesController < ApplicationController
   end
 
   private
+
+  def set_ratings
+    @ratings = {
+      "G" => true,
+      "PG" => true,
+      "PG-13" => true,
+      "R" => true
+    }
+    ratings = params[:ratings]
+    unless ratings.nil?
+      @ratings.map{|k, v| @ratings[k] = false}
+      ratings.each do |rating|
+        @ratings[rating] = true
+      end
+    end
+  end
 
   def sort_column
     Movie.column_names.include?(params[:sort_by]) ? params[:sort_by] : nil

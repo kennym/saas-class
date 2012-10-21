@@ -43,13 +43,19 @@ class MoviesController < ApplicationController
   private
 
   def set_ratings
+
     @ratings = {
       "G" => true,
       "PG" => true,
       "PG-13" => true,
       "R" => true
     }
-    ratings = params[:ratings]
+    unless params[:ratings]
+      ratings = session[:ratings]
+    else
+      ratings = params[:ratings]
+      session[:ratings] = params[:ratings]
+    end
     unless ratings.nil?
       @ratings.map{|k, v| @ratings[k] = false}
       ratings.each do |rating|
@@ -59,6 +65,12 @@ class MoviesController < ApplicationController
   end
 
   def sort_column
-    Movie.column_names.include?(params[:sort_by]) ? params[:sort_by] : nil
+    if params[:sort_by]
+      sort_by = params[:sort_by]
+      session[:sort_by] = sort_by
+    else
+      sort_by = session[:sort_by]
+    end
+    Movie.column_names.include?(sort_by) ? sort_by : nil
   end
 end

@@ -2,6 +2,11 @@ class MoviesController < ApplicationController
   helper_method :sort_column
 
   def index
+    unless params[:sort_by] or params[:ratings]
+      if session[:sort_by] or session[:ratings]
+        redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings]) and return
+      end
+    end
     set_ratings
     @movies = Movie.where(:rating => @ratings.select{|k, v| @ratings[k] == true}.keys)
                    .order(sort_column)
